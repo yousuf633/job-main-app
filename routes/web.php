@@ -10,21 +10,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// ملفات التعريف (تسجيل الدخول والخروج) - يفضل وضعها قبل مسارات الحماية
+require __DIR__.'/auth.php';
 
-
-Route::middleware('auth')->group(function () {
-    Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
-    Route::get('/job-applications',[JobApplicationsController::class,'index'])->name('job-applications.index');
-    Route::get('/job-vacancies/{id}',[JobVacancyController::class,'show'])->name('job-vacancies.show');
-    Route::get('job-vacancies/{id}/apply',[JobVacancyController::class,'apply'])->name('job-vacancies.apply');
-    Route::post('job-vacancies/{id}/apply',[JobVacancyController::class,'processApplication'])->name('job-vacancies.process-application');
+// المسارات التي تتطلب تسجيل دخول
+Route::middleware(['auth','role:job-seeker'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/job-applications', [JobApplicationsController::class, 'index'])->name('job-applications.index');
+    Route::get('/job-vacancies/{id}', [JobVacancyController::class, 'show'])->name('job-vacancies.show');
+    Route::get('/job-vacancies/{id}/apply', [JobVacancyController::class, 'apply'])->name('job-vacancies.apply');
+    Route::post('/job-vacancies/{id}/apply', [JobVacancyController::class, 'processApplication'])->name('job-vacancies.process-application');
+    
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-
-    
 });
-
-
-require __DIR__.'/auth.php';
