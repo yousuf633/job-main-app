@@ -69,5 +69,17 @@
             </a>
 
         </div>
+        <div class="mt-6 w-full">
+    <a href="{{ route('google.login') }}"
+       class="w-full flex items-center justify-center gap-3 border border-gray-300 rounded-xl py-3 hover:bg-gray-100 transition">
+
+        <img src="https://www.svgrepo.com/show/475656/google-color.svg"
+             class="w-5 h-5">
+
+        <span class="text-gray-700 font-medium">
+            Continue with Google
+        </span>
+    </a>
+</div>
     </form>
 </x-guest-layout>

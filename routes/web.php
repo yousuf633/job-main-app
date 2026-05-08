@@ -10,10 +10,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// ملفات التعريف (تسجيل الدخول والخروج) - يفضل وضعها قبل مسارات الحماية
 require __DIR__.'/auth.php';
+use App\Http\Controllers\Auth\GoogleController;
+// Google Auth (PUBLIC ROUTES)
+Route::get('/auth/google', [GoogleController::class, 'redirect'])
+    ->name('google.login');
 
-// المسارات التي تتطلب تسجيل دخول
+Route::get('/auth/google/callback', [GoogleController::class, 'callback'])
+    ->name('google.callback');
+
+
 Route::middleware(['auth','role:job-seeker'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/job-applications', [JobApplicationsController::class, 'index'])->name('job-applications.index');
